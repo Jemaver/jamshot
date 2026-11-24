@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>JamShot mockup</title>
+<style>
+  :root{
+    --accent:#63D0DF;          /* COSMIC accent (з теми) */
+    --glass:rgba(30,32,36,.62);
+    --glass-edge:rgba(255,255,255,.10);
+    --ink:#ECEEF1;
+    --ink-dim:#A3A9B1;
+    --hover:rgba(255,255,255,.08);
+    --dim:rgba(8,10,14,.45);
+    --r-pill:16px; --r-btn:10px;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%;background:#000;overflow:hidden;font-family:"Fira Sans",sans-serif;color:var(--ink)}
+  #stage{width:1920px;height:1200px;position:absolute;left:0;top:0;transform-origin:0 0;
+         background:url(bg.jpg) 0 0/1920px 1200px}
+  .dim{position:absolute;inset:0;background:var(--dim)}
+  /* виділення: «дірка» без затемнення */
+  .sel{position:absolute;left:560px;top:300px;width:760px;height:440px;
+       background:url(bg.jpg) -560px -300px/1920px 1200px;
+       outline:1.5px solid var(--accent);box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+  .h{position:absolute;width:11px;height:11px;border-radius:50%;background:#fff;
+     box-shadow:0 0 0 2px var(--accent),0 1px 4px rgba(0,0,0,.5);transform:translate(-50%,-50%)}
+  .size{position:absolute;left:560px;top:270px;padding:4px 9px;border-radius:8px;
+        background:var(--glass);backdrop-filter:blur(18px) saturate(1.4);border:1px solid var(--glass-edge);
+        font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink);letter-spacing:.2px}
+  .size b{font-weight:500}
+  /* анотації */
+  svg.ann{position:absolute;left:560px;top:300px;overflow:visible}
+  .pix{position:absolute;left:980px;top:620px;width:220px;height:40px;
+       background:url(bg.jpg) -980px -620px/1920px 1200px;filter:blur(0);image-rendering:pixelated}
+  .pix::after{content:"";position:absolute;inset:0;
+       background:
+        repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 10px,rgba(0,0,0,.07) 10px 20px),
+        repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 10px,rgba(0,0,0,.07) 10px 20px),
+        rgba(120,128,140,.85)}
+  /* панель */
+  .bar{position:absolute;right:calc(1920px - 1320px);top:752px;display:flex;align-items:center;gap:2px;
+       padding:5px;border-radius:var(--r-pill);background:var(--glass);
+       backdrop-filter:blur(24px) saturate(1.5);border:1px solid var(--glass-edge);
+       box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06)}
+  .btn{position:relative;width:36px;height:36px;border-radius:var(--r-btn);display:grid;place-items:center;
+       color:var(--ink-dim);cursor:pointer;transition:background .15s,color .15s}
+  .btn:hover{background:var(--hover);color:var(--ink)}
+  .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+  .btn.on{color:#0B2A2E;background:var(--accent)}
+  .sep{width:1px;height:20px;background:var(--glass-edge);margin:0 5px}
+  .dot{width:16px;height:16px;border-radius:50%;background:#FF5A5F;box-shadow:0 0 0 2px rgba(255,255,255,.85)}
+  .btn .tip{position:absolute;bottom:46px;left:50%;transform:translateX(-50%);white-space:nowrap;
+       padding:5px 8px;border-radius:8px;background:rgba(20,22,26,.92);font-size:12px;color:var(--ink);
+       opacity:0;pointer-events:none;transition:opacity .15s .3s}
+  .btn .tip kbd{font:inherit;color:var(--ink-dim);margin-left:6px}
+  .btn:hover .tip{opacity:1}
+  .primary{color:var(--ink)}
+  /* поповер кольору */
+  .pop{position:absolute;left:1036px;top:806px;padding:10px;border-radius:14px;background:var(--glass);
+       backdrop-filter:blur(24px) saturate(1.5);border:1px solid var(--glass-edge);
+       box-shadow:0 10px 30px rgba(0,0,0,.35);display:grid;gap:10px}
+  .sw{display:flex;gap:8px}
+  .sw i{width:20px;height:20px;border-radius:50%;cursor:pointer}
+  .sw i.sel2{box-shadow:0 0 0 2px #1E2024,0 0 0 4px #fff}
+  .wd{display:flex;gap:6px;align-items:center;justify-content:space-between}
+  .wd span{flex:1;height:30px;border-radius:8px;display:grid;place-items:center;cursor:pointer}
+  .wd span:hover{background:var(--hover)}
+  .wd span.on{background:rgba(255,255,255,.12)}
+  .wd span b{display:block;border-radius:9px;background:var(--ink);width:22px}
+  .label{position:fixed;left:16px;top:16px;font:13px "Fira Sans";color:#fff;background:rgba(0,0,0,.55);padding:6px 10px;border-radius:8px;z-index:9}
+</style>
+</head>
+<body>
+<div class="label">JamShot mockup · hover buttons for shortcuts</div>
+<div id="stage">
+  <div class="dim"></div>
+  <div class="sel"></div>
+  <!-- ручки -->
+  <div class="h" style="left:560px;top:300px"></div><div class="h" style="left:940px;top:300px"></div><div class="h" style="left:1320px;top:300px"></div>
+  <div class="h" style="left:560px;top:520px"></div><div class="h" style="left:1320px;top:520px"></div>
+  <div class="h" style="left:560px;top:740px"></div><div class="h" style="left:940px;top:740px"></div><div class="h" style="left:1320px;top:740px"></div>
+  <div class="size"><b>760</b> × <b>440</b></div>
+
+  <div class="pix"></div>
+  <svg class="ann" width="760" height="440">
+    <rect x="70" y="80" width="300" height="120" rx="6" fill="none" stroke="#FF5A5F" stroke-width="4"/>
+    <g stroke="#FF5A5F" stroke-width="4" stroke-linecap="round" fill="none">
+      <path d="M560 300 L392 168"/>
+    </g>
+    <path d="M380 158 l26 4 l-14 18 z" fill="#FF5A5F" transform="rotate(0)"/>
+    <rect x="430" y="40" width="250" height="26" fill="#FFD23F" opacity=".38" rx="3"/>
+    <text x="470" y="330" fill="#FF5A5F" font-family="Fira Sans" font-weight="600" font-size="26">ось тут</text>
+  </svg>
+
+  <div class="bar">
+    <div class="btn"><svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg><span class="tip">Перемістити рамку<kbd>V</kbd></span></div>
+    <div class="sep"></div>
+    <div class="btn"><svg viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg><span class="tip">Олівець<kbd>P</kbd></span></div>
+    <div class="btn"><svg viewBox="0 0 24 24"><path d="M5 19 19 5"/></svg><span class="tip">Лінія<kbd>L</kbd></span></div>
+    <div class="btn on"><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg><span class="tip">Стрілка<kbd>A</kbd></span></div>
+    <div class="btn"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/></svg><span class="tip">Рамка<kbd>R</kbd></span></div>
+    <div class="btn"><svg viewBox="0 0 24 24"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg><span class="tip">Маркер<kbd>M</kbd></span></div>
+    <div class="btn"><svg viewBox="0 0 24 24"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg><span class="tip">Текст<kbd>T</kbd></span></div>
+    <div class="btn"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg><span class="tip">Пікселі<kbd>B</kbd></span></div>
+    <div class="sep"></div>
+    <div class="btn"><span class="dot"></span><span class="tip">Колір і товщина<kbd>C</kbd></span></div>
+    <div class="btn"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5 5.5 5.5 0 0 1-5.5 5.5H11"/></svg><span class="tip">Скасувати<kbd>Ctrl Z</kbd></span></div>
+    <div class="sep"></div>
+    <div class="btn primary"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg><span class="tip">Зберегти<kbd>Ctrl S</kbd></span></div>
+    <div class="btn primary"><svg viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="tip">Копіювати<kbd>Ctrl C</kbd></span></div>
+    <div class="btn"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="tip">Закрити<kbd>Esc</kbd></span></div>
+  </div>
+
+  <div class="pop">
+    <div class="sw">
+      <i class="sel2" style="background:#FF5A5F"></i><i style="background:#FF9F43"></i><i style="background:#FFD23F"></i>
+      <i style="background:#3DDC84"></i><i style="background:#63D0DF"></i><i style="background:#7C8CFF"></i>
+      <i style="background:#FFFFFF"></i><i style="background:#1B1D21;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)"></i>
+    </div>
+    <div class="wd">
+      <span><b style="height:2px"></b></span><span class="on"><b style="height:4px"></b></span><span><b style="height:7px"></b></span>
+    </div>
+  </div>
+</div>
+<script>
+  const s=document.getElementById('stage');
+  const fit=()=>{const k=Math.min(innerWidth/1920,innerHeight/1200);s.style.transform=`scale(${k})`};
+  addEventListener('resize',fit);fit();
+</script>
+</body>
+</html>

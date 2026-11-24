@@ -1,0 +1,24 @@
+[package]
+name = "jamshot"
+version = "0.1.0"
+edition = "2024"
+description = "A fast Lightshot-style screenshot tool for the COSMIC desktop (Wayland), written in Rust"
+license = "MIT"
+repository = "https://github.com/Jemaver/jamshot"
+readme = "README.md"
+keywords = ["screenshot", "wayland", "cosmic", "annotation", "lightshot"]
+categories = ["multimedia::images", "gui"]
+
+[dependencies]
+ab_glyph = "0.2.32"
+chrono = "0.4.45"
+png = "0.18.1"
+resvg = { version = "0.50.0", default-features = false }
+smithay-client-toolkit = "0.21.1"
+wayland-client = "0.31.15"
+wayland-protocols = { version = "0.32.13", features = ["staging", "client"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
